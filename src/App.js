@@ -73,7 +73,7 @@ const Clear = styled.button`
     border-width: 0;
     border-radius: 4px;
     width: 70px;
-    height: 48px;
+    height: 64px;
     font-family: inherit;
     font-size: 15px;
     color: #44b50c;
@@ -88,14 +88,16 @@ const Dates = styled.div`
 const DateWrap = styled.div`
     flex: 1;
     position: relative;
-    height: 50px;
+    height: 64px;
     background-color: #fff;
     border: solid 1px #e5e3e8;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     padding: 0 15px;
     font-size: 1.6rem;
     color: #666;
+    cursor: pointer;
     ${props=>props.depart && css`
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
@@ -107,6 +109,19 @@ const DateWrap = styled.div`
     ${props=>props.active && css`
         border: solid 2px #55c901;
     `}
+    span{
+        display: none;
+        &.isActive{
+            display: block;
+        }
+    }
+    input{
+        border: 0;
+        pointer-events: none;
+        &:focus{
+            outline: 0;
+        }
+    }
 `
 const Arrows = styled.div`
     height: 40px;
@@ -168,6 +183,7 @@ const DayLabel = styled.div`
     padding: 8px 0;
     text-align: center;
     width: 32px;
+    height: 32px;
     &:nth-of-type(7) {
         color: rgba(0,0,0,.85);
         margin: 0;
@@ -202,7 +218,7 @@ const Day = styled.div`
         pointer-events: none;
     `}
     ${props=>props.holiday && css`
-        color: #ea5050;
+        color: #ea5050!important;
         font-weight: 500;
     `}
     ${props=>props.selected && css`
@@ -273,10 +289,12 @@ function App() {
                                     </Clear>
                                     <Dates>
                                         <DateWrap depart active>
-                                            Depart
+                                            <span>Depart</span>
+                                            <input readonly="readonly" type="text" placeholder="Depart" />
                                         </DateWrap>
                                         <DateWrap return>
-                                            Return
+                                            <span>Return</span>
+                                            <input readonly="readonly" type="text" placeholder="Depart" />
                                         </DateWrap>
                                     </Dates>
                                 </Top>

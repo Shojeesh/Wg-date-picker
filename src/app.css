@@ -2,8 +2,7 @@
 
 .App{
 	display: flex;
-	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	padding: 0 200px;
+	padding: 200px 200px;
 }
