@@ -201,6 +201,25 @@ const Day = styled.div`
     ${props=>props.empty && css`
         pointer-events: none;
     `}
+    ${props=>props.holiday && css`
+        color: #ea5050;
+        font-weight: 500;
+    `}
+    ${props=>props.selected && css`
+        background-color: #44b50c;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 4px;
+        &:hover{
+            background-color: #44b50c;
+            color: #fff;
+        }
+    `}
+    ${props=>props.range && css`
+        color: #44b50c;
+        font-weight: 600;
+        background-color: #bef7a1;
+    `}
 `
 const HolidayHeader = styled.div`
     display: flex;
@@ -288,19 +307,19 @@ function App() {
                                             <Day empty></Day>
                                             <Day empty></Day>
                                             <Day empty></Day>
-                                            <Day>1</Day>
+                                            <Day holiday>1*</Day>
                                             <Day>2</Day>
                                             <Day>3</Day>
-                                            <Day>4</Day>
-                                            <Day>5</Day>
-                                            <Day>6</Day>
-                                            <Day>7</Day>
-                                            <Day>8</Day>
-                                            <Day>9</Day>
-                                            <Day>10</Day>
-                                            <Day>11</Day>
-                                            <Day>12</Day>
-                                            <Day>13</Day>
+                                            <Day selected>4</Day>
+                                            <Day range>5</Day>
+                                            <Day range>6</Day>
+                                            <Day range>7</Day>
+                                            <Day range>8</Day>
+                                            <Day range>9</Day>
+                                            <Day range>10</Day>
+                                            <Day range>11</Day>
+                                            <Day range>12</Day>
+                                            <Day selected>13</Day>
                                             <Day>14</Day>
                                             <Day>15</Day>
                                             <Day>16</Day>
@@ -312,7 +331,7 @@ function App() {
                                             <Day>22</Day>
                                             <Day>23</Day>
                                             <Day>24</Day>
-                                            <Day>25</Day>
+                                            <Day holiday>25*</Day>
                                             <Day>26</Day>
                                             <Day>27</Day>
                                             <Day>28</Day>
