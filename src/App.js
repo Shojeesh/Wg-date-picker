@@ -21,6 +21,7 @@ const DatePickerWrap = styled.div`
     align-items: center;
     justify-content: center;
     width: 300px;
+    user-select none;
 `
 const DateField = styled.div`
     display: flex;
@@ -39,7 +40,6 @@ const DatePicker = styled.div`
     background: #fff;
     border-radius: 8px;
     box-sizing: border-box;
-    width: 664px;
     box-shadow: 0 2px 8px 0 rgba(39,38,44,.2);
     z-index: 99;
     top: -20px;
@@ -67,22 +67,25 @@ const Backdrop = styled.div`
 const Top = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
 `
 const Clear = styled.button`
     border-width: 0;
     border-radius: 4px;
     width: 70px;
-    height: 64px;
+    height: 30px;
     font-family: inherit;
     font-size: 15px;
     color: #44b50c;
     cursor: pointer;
     outline: 0;
     background: 0 0;
+    &:hover{
+        background: #e7fddc;
+    }
 `
 const Dates = styled.div`
-    width: 400px;
     display: flex;
 `
 const DateWrap = styled.div`
@@ -123,7 +126,7 @@ const DateWrap = styled.div`
         }
     }
 `
-const Arrows = styled.div`
+const ArrowBlock = styled.div`
     height: 40px;
     position: absolute;
     left: 0;
@@ -132,35 +135,37 @@ const Arrows = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 16px;
-    justify-content: space-between;
     svg{
-        width: 7px;
+        width: 5px;
     }
 `
-const LeftArrow = styled.div`
-    width: 40px;
+const Arrows = styled.div`
     height: 40px;
     display: flex;
     align-items:center;
     justify-content: center;
     cursor: pointer;
 `
-const RightArrow = styled.div`
-    width: 40px;
-    height: 40px;
+const Arrow = styled.div`
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items:center;
     justify-content: center;
     cursor: pointer;
+    border-radius: 4px;
+    &:hover{
+        background: #e7fddc;
+    }
 `
 const Calendars = styled.div`
     display: flex;
     justify-content: space-between;
 `
 const Calendar = styled.div`
-    width: 50%;
+    width: 100%;
     max-width: 296px;
+    position: relative;
 `
 const Month = styled.div`
     display: flex;
@@ -231,11 +236,43 @@ const Day = styled.div`
             color: #fff;
         }
     `}
+    ${props=>props.selectedFrom && css`
+        &:after{
+            content: '';
+            width: 24px;
+            height: 32px;
+            background: #bef7a1;
+            right: -12px;
+            position: absolute;
+            top: 0;
+            z-index: -1;
+        }
+    `}
     ${props=>props.range && css`
         color: #44b50c;
         font-weight: 600;
         background-color: #bef7a1;
+        border-radius: 0;
+        &:nth-of-type(7n){
+            margin-right: 0;
+            border-right: 0;
+            &:after{
+                display: none;
+            }
+        }
+        &:after{
+            content: '';
+            width: 24px;
+            height: 32px;
+            background: #bef7a1;
+            right: -15px;
+            position: absolute;
+            top: 0;
+            z-index: -1;
+        }
     `}
+`
+const Footer = styled.div`
 `
 const HolidayHeader = styled.div`
     display: flex;
@@ -269,6 +306,35 @@ const HolidayName = styled.div`
     color: #999;
     margin-left: 5px;
 `
+const Tooltip = styled.div`
+    background-color: #333;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 3px 8px;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    pointer-events: none;
+    transform: translateX(-50%);
+    visibility: hidden;
+    &:before{
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #333 transparent;
+    }
+    ${Day}:hover & {
+        visibility: visible;
+    }
+`
 
 function App() {
     const [showPicker, setShowPicker] = useState(false);
@@ -292,22 +358,30 @@ function App() {
                                             <span>Depart</span>
                                             <input readonly="readonly" type="text" placeholder="Depart" />
                                         </DateWrap>
-                                        <DateWrap return>
-                                            <span>Return</span>
-                                            <input readonly="readonly" type="text" placeholder="Depart" />
-                                        </DateWrap>
                                     </Dates>
                                 </Top>
-                                <Arrows>
-                                    <LeftArrow>
-                                        <IconLeftArrow />
-                                    </LeftArrow>
-                                    <RightArrow>
-                                        <IconRightArrow />
-                                    </RightArrow>
-                                </Arrows>
                                 <Calendars>
                                     <Calendar>
+                                        <ArrowBlock>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                        </ArrowBlock>
                                         <Month>
                                             January 2020
                                         </Month>
@@ -325,10 +399,15 @@ function App() {
                                             <Day empty></Day>
                                             <Day empty></Day>
                                             <Day empty></Day>
-                                            <Day holiday>1*</Day>
+                                            <Day holiday>
+                                                1*
+                                                <Tooltip>
+                                                    New Year
+                                                </Tooltip>
+                                            </Day>
                                             <Day>2</Day>
                                             <Day>3</Day>
-                                            <Day selected>4</Day>
+                                            <Day selected selectedFrom>4</Day>
                                             <Day range>5</Day>
                                             <Day range>6</Day>
                                             <Day range>7</Day>
@@ -337,10 +416,10 @@ function App() {
                                             <Day range>10</Day>
                                             <Day range>11</Day>
                                             <Day range>12</Day>
-                                            <Day selected>13</Day>
-                                            <Day>14</Day>
-                                            <Day>15</Day>
-                                            <Day>16</Day>
+                                            <Day range>13</Day>
+                                            <Day range>14</Day>
+                                            <Day range>15</Day>
+                                            <Day selected selectedTo>16</Day>
                                             <Day>17</Day>
                                             <Day>18</Day>
                                             <Day>19</Day>
@@ -349,7 +428,12 @@ function App() {
                                             <Day>22</Day>
                                             <Day>23</Day>
                                             <Day>24</Day>
-                                            <Day holiday>25*</Day>
+                                            <Day holiday>
+                                                25*
+                                                <Tooltip>
+                                                    Christmas
+                                                </Tooltip>
+                                            </Day>
                                             <Day>26</Day>
                                             <Day>27</Day>
                                             <Day>28</Day>
@@ -357,82 +441,32 @@ function App() {
                                             <Day>30</Day>
                                             <Day>31</Day>
                                         </Days>
-                                    </Calendar>
+                                        <Footer>
+                                            <HolidayHeader>
+                                                *Public Holidays
+                                            </HolidayHeader>
+                                            <Holidays>
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        25 Dec
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        Christmas
+                                                    </HolidayName>
+                                                </Holiday>
 
-                                    <Calendar>
-                                        <Month>
-                                            January 2020
-                                        </Month>
-                                        <DayLabels>
-                                            <DayLabel key="0">Mon</DayLabel>
-                                            <DayLabel key="1">Tue</DayLabel>
-                                            <DayLabel key="2">Wed</DayLabel>
-                                            <DayLabel key="3">Thu</DayLabel>
-                                            <DayLabel key="4">Fri</DayLabel>
-                                            <DayLabel key="5">Sat</DayLabel>
-                                            <DayLabel key="6">Sun</DayLabel>
-                                        </DayLabels>
-                                        <Days>
-                                            <Day empty></Day>
-                                            <Day empty></Day>
-                                            <Day empty></Day>
-                                            <Day empty></Day>
-                                            <Day>1</Day>
-                                            <Day>2</Day>
-                                            <Day>3</Day>
-                                            <Day>4</Day>
-                                            <Day>5</Day>
-                                            <Day>6</Day>
-                                            <Day>7</Day>
-                                            <Day>8</Day>
-                                            <Day>9</Day>
-                                            <Day>10</Day>
-                                            <Day>11</Day>
-                                            <Day>12</Day>
-                                            <Day>13</Day>
-                                            <Day>14</Day>
-                                            <Day>15</Day>
-                                            <Day>16</Day>
-                                            <Day>17</Day>
-                                            <Day>18</Day>
-                                            <Day>19</Day>
-                                            <Day>20</Day>
-                                            <Day>21</Day>
-                                            <Day>22</Day>
-                                            <Day>23</Day>
-                                            <Day>24</Day>
-                                            <Day>25</Day>
-                                            <Day>26</Day>
-                                            <Day>27</Day>
-                                            <Day>28</Day>
-                                            <Day>29</Day>
-                                            <Day>30</Day>
-                                            <Day>31</Day>
-                                        </Days>
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        1 Jan
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        New Year
+                                                    </HolidayName>
+                                                </Holiday>
+                                            </Holidays>
+                                        </Footer>
                                     </Calendar>
                                 </Calendars>
-                                <HolidayHeader>
-                                    *Public Holidays
-                                </HolidayHeader>
-                                <Holidays>
-                                    <Holiday>
-                                        <HolidayDate>
-                                            25 Dec
-                                        </HolidayDate>
-                                        <HolidayName>
-                                            Christmas
-                                        </HolidayName>
-                                    </Holiday>
-
-                                    <Holiday>
-                                        <HolidayDate>
-                                            1 Jan
-                                        </HolidayDate>
-                                        <HolidayName>
-                                            New Year
-                                        </HolidayName>
-                                    </Holiday>
-                                </Holidays>
                             </DatePicker>
                             <Backdrop onClick={togglePicker} />
                         </>
