@@ -166,6 +166,9 @@ const Calendar = styled.div`
     width: 100%;
     max-width: 296px;
     position: relative;
+    & + & {
+        margin-left: 20px;
+    }
 `
 const Month = styled.div`
     display: flex;
@@ -361,6 +364,111 @@ function App() {
                                     </Dates>
                                 </Top>
                                 <Calendars>
+                                    <Calendar>
+                                        <ArrowBlock>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                        </ArrowBlock>
+                                        <Month>
+                                            January 2020
+                                        </Month>
+                                        <DayLabels>
+                                            <DayLabel key="0">Mon</DayLabel>
+                                            <DayLabel key="1">Tue</DayLabel>
+                                            <DayLabel key="2">Wed</DayLabel>
+                                            <DayLabel key="3">Thu</DayLabel>
+                                            <DayLabel key="4">Fri</DayLabel>
+                                            <DayLabel key="5">Sat</DayLabel>
+                                            <DayLabel key="6">Sun</DayLabel>
+                                        </DayLabels>
+                                        <Days>
+                                            <Day empty></Day>
+                                            <Day empty></Day>
+                                            <Day empty></Day>
+                                            <Day empty></Day>
+                                            <Day holiday>
+                                                1*
+                                                <Tooltip>
+                                                    New Year
+                                                </Tooltip>
+                                            </Day>
+                                            <Day>2</Day>
+                                            <Day>3</Day>
+                                            <Day selected selectedFrom>4</Day>
+                                            <Day range>5</Day>
+                                            <Day range>6</Day>
+                                            <Day range>7</Day>
+                                            <Day range>8</Day>
+                                            <Day range>9</Day>
+                                            <Day range>10</Day>
+                                            <Day range>11</Day>
+                                            <Day range>12</Day>
+                                            <Day range>13</Day>
+                                            <Day range>14</Day>
+                                            <Day range>15</Day>
+                                            <Day selected selectedTo>16</Day>
+                                            <Day>17</Day>
+                                            <Day>18</Day>
+                                            <Day>19</Day>
+                                            <Day>20</Day>
+                                            <Day>21</Day>
+                                            <Day>22</Day>
+                                            <Day>23</Day>
+                                            <Day>24</Day>
+                                            <Day holiday>
+                                                25*
+                                                <Tooltip>
+                                                    Christmas
+                                                </Tooltip>
+                                            </Day>
+                                            <Day>26</Day>
+                                            <Day>27</Day>
+                                            <Day>28</Day>
+                                            <Day>29</Day>
+                                            <Day>30</Day>
+                                            <Day>31</Day>
+                                        </Days>
+                                        <Footer>
+                                            <HolidayHeader>
+                                                *Public Holidays
+                                            </HolidayHeader>
+                                            <Holidays>
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        25 Dec
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        Christmas
+                                                    </HolidayName>
+                                                </Holiday>
+
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        1 Jan
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        New Year
+                                                    </HolidayName>
+                                                </Holiday>
+                                            </Holidays>
+                                        </Footer>
+                                    </Calendar>
                                     <Calendar>
                                         <ArrowBlock>
                                             <Arrows>
