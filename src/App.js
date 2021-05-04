@@ -23,17 +23,6 @@ const DatePickerWrap = styled.div`
     width: 300px;
     user-select none;
 `
-const DateField = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: 50px;
-    padding: 0 16px;
-    border: solid 1px #ddd;
-    max-width: 300px;
-    cursor: pointer;
-`
 const DatePicker = styled.div`
     display: block;
     position: absolute;
@@ -92,10 +81,11 @@ const Clear = styled.button`
         background: #e7fddc;
     }
 `
-const Dates = styled.div`
+const DateHolder = styled.div`
     display: flex;
+    position: relative;
 `
-const DateWrap = styled.div`
+const DateField = styled.div`
     flex: 1;
     position: relative;
     height: 64px;
@@ -130,6 +120,25 @@ const DateWrap = styled.div`
         pointer-events: none;
         &:focus{
             outline: 0;
+        }
+    }
+`
+const DateFieldArrows = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    display: flex;
+    justify-content: space-between;
+`
+const DateFieldArrow = styled.div`
+    width: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg{
+        width: 6px;
+        path{
+            fill: #999;
         }
     }
 `
@@ -363,15 +372,29 @@ function App() {
                             <MobileHeader>
                             </MobileHeader>:
                             <WebHeader>
-                                <Clear>
-                                    Clear
-                                </Clear>
-                                <Dates>
-                                    <DateWrap depart active onClick={togglePicker}>
-                                        <span>Depart</span>
-                                        <input readonly="readonly" type="text" placeholder="Depart" />
-                                    </DateWrap>
-                                </Dates>
+                                { showPicker ?
+                                    <Clear>
+                                        Clear
+                                    </Clear>:
+                                    <>
+                                    </>
+                                }
+                                <DateHolder>
+                                    <DateField depart active onClick={togglePicker}>
+                                        <div>
+                                            <span>Depart</span>
+                                            <input readonly="readonly" type="text" placeholder="Depart" />
+                                        </div>
+                                    </DateField>
+                                    <DateFieldArrows disabled={"if value is empty inside arrows will be disabled, refer screenshot which I shared or check wego 😉"}>
+                                        <DateFieldArrow onClick={() => console.log("previous date")}>
+                                            <IconLeftArrow />
+                                        </DateFieldArrow>
+                                        <DateFieldArrow onClick={() => console.log("next date")}>
+                                            <IconRightArrow />
+                                        </DateFieldArrow>
+                                    </DateFieldArrows>
+                                </DateHolder>
                             </WebHeader>
                         }
                         {showPicker &&
