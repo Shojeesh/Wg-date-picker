@@ -29,7 +29,6 @@ const DatePicker = styled.div`
     background: #fff;
     border-radius: 8px;
     box-sizing: border-box;
-    box-shadow: 0 2px 8px 0 rgba(39,38,44,.2);
     z-index: 99;
     top: -20px;
     right: -20px;
@@ -41,6 +40,9 @@ const DatePicker = styled.div`
     transform-origin: top left;
     opacity: 1;
     transform-origin: top right;
+    &.isActive{
+        box-shadow: 0 2px 8px 0 rgba(39,38,44,.2);
+    }
 `
 const Backdrop = styled.div`
     width: 100%;
@@ -98,6 +100,9 @@ const DateField = styled.div`
     font-size: 1.6rem;
     color: #666;
     cursor: pointer;
+    &+&{
+        margin-left: -2px;
+    }
     ${props=>props.depart && css`
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
@@ -367,7 +372,7 @@ function App() {
         <div className="App">
             <SearchWidget>
                 <DatePickerWrap>
-                    <DatePicker>
+                    <DatePicker className={showPicker ? 'isActive' : ''}>
                         {isMobile ? 
                             <MobileHeader>
                             </MobileHeader>:
@@ -379,6 +384,12 @@ function App() {
                                 }
                                 <DateHolder>
                                     <DateField depart active onClick={togglePicker}>
+                                        <div>
+                                            <span>Depart</span>
+                                            <input readonly="readonly" type="text" placeholder="Depart" />
+                                        </div>
+                                    </DateField>
+                                    <DateField return active onClick={togglePicker}>
                                         <div>
                                             <span>Depart</span>
                                             <input readonly="readonly" type="text" placeholder="Depart" />
