@@ -372,12 +372,10 @@ function App() {
                             <MobileHeader>
                             </MobileHeader>:
                             <WebHeader>
-                                { showPicker ?
+                                { showPicker &&
                                     <Clear>
                                         Clear
-                                    </Clear>:
-                                    <>
-                                    </>
+                                    </Clear>
                                 }
                                 <DateHolder>
                                     <DateField depart active onClick={togglePicker}>
@@ -632,7 +630,9 @@ function App() {
                             </>
                         }
                     </DatePicker>
-                                <Backdrop onClick={togglePicker} />
+                    { showPicker &&
+                        <Backdrop onClick={togglePicker} />
+                    }
                 </DatePickerWrap>
             </SearchWidget>
         </div>
