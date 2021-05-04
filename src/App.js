@@ -114,8 +114,11 @@ const DateField = styled.div`
     ${props=>props.active && css`
         border: solid 2px #55c901;
     `}
-    span{
-        display: none;
+    label{
+        font-size 1.4rem;
+        margin-left: 3px;
+        margin-bottom: 5px;
+        pointer-events: none;
         &.isActive{
             display: block;
         }
@@ -134,6 +137,9 @@ const DateFieldArrows = styled.div`
     right: 5px;
     display: flex;
     justify-content: space-between;
+    ${props => props.isDisabled && css`
+        display: none;
+    `}
 `
 const DateFieldArrow = styled.div`
     width: 15px;
@@ -194,14 +200,22 @@ const Calendar = styled.div`
     width: 100%;
     display: flex;
     position: relative;
+    &.isWeb{
+        .dpMonth + .dpMonth{
+            margin-left: 20px;
+        }
+    }
+    &.isMobile{
+        flex-direction: column;
+        .dpMonth + .dpMonth{
+            margin-top: 15px;
+        }
+    }
 `
 const Month = styled.div`
     width: 100%;
     max-width: 296px;
     position: relative;
-    & + & {
-        margin-left: 20px;
-    }
 `
 const Weeks = styled.div`
 `
@@ -364,6 +378,8 @@ const Tooltip = styled.div`
 
 function App() {
     const isMobile = false
+    const hasReturn = true
+    const hasValue = true
     const [showPicker, setShowPicker] = useState(false);
     const togglePicker = () => {
         setShowPicker(prevState => !prevState);
@@ -384,18 +400,17 @@ function App() {
                                 }
                                 <DateHolder>
                                     <DateField depart active onClick={togglePicker}>
-                                        <div>
-                                            <span>Depart</span>
-                                            <input readonly="readonly" type="text" placeholder="Depart" />
-                                        </div>
+                                        <label>Depart</label>
+                                        <input readonly="readonly" type="text" placeholder="10/04/21" />
                                     </DateField>
-                                    <DateField return active onClick={togglePicker}>
-                                        <div>
-                                            <span>Depart</span>
-                                            <input readonly="readonly" type="text" placeholder="Depart" />
-                                        </div>
-                                    </DateField>
-                                    <DateFieldArrows disabled={"if value is empty inside arrows will be disabled, refer screenshot which I shared or check wego 😉"}>
+                                    { hasReturn && 
+                                        <DateField return active onClick={togglePicker}>
+                                            <label>Return</label>
+                                            <input readonly="readonly" type="text" placeholder="11/04/21" />
+                                        </DateField>
+                                    }
+                                    <DateFieldArrows isDisabled={ hasValue === false}
+                                    >
                                         <DateFieldArrow onClick={() => console.log("previous date")}>
                                             <IconLeftArrow />
                                         </DateFieldArrow>
@@ -406,33 +421,144 @@ function App() {
                                 </DateHolder>
                             </WebHeader>
                         }
-                        {showPicker &&
-                            <>
-                                <Body>
-                                    <Calendar className={"align column or row based on isMobile"}>
-                                        <Month>
+                        { showPicker &&
+                            <Body>
+                                <Calendar className={isMobile ? 'isMobile' : 'isWeb'}>
+                                    <Month className='dpMonth'>
+                                        <MonthHeader>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                            <MonthYear>
+                                                <MonthHolder>January</MonthHolder> <YearHolder>2020</YearHolder>
+                                            </MonthYear>
+                                            <Arrows>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                            </Arrows>
+                                        </MonthHeader>
+                                        <Weeks>
+                                            <Week>
+                                                <DayLabel key="0">Mon</DayLabel>
+                                                <DayLabel key="1">Tue</DayLabel>
+                                                <DayLabel key="2">Wed</DayLabel>
+                                                <DayLabel key="3">Thu</DayLabel>
+                                                <DayLabel key="4">Fri</DayLabel>
+                                                <DayLabel key="5">Sat</DayLabel>
+                                                <DayLabel key="6">Sun</DayLabel>
+                                            </Week>
+                                            <Week>
+                                                <Day empty></Day>
+                                                <Day empty></Day>
+                                                <Day empty></Day>
+                                                <Day empty></Day>
+                                                <Day holiday>
+                                                    1*
+                                                    <Tooltip>
+                                                        New Year
+                                                    </Tooltip>
+                                                </Day>
+                                                <Day>2</Day>
+                                                <Day>3</Day>
+                                            </Week>
+                                            <Week>
+                                                <Day selected selectedFrom>4</Day>
+                                                <Day range>5</Day>
+                                                <Day range>6</Day>
+                                                <Day range>7</Day>
+                                                <Day range>8</Day>
+                                                <Day range>9</Day>
+                                                <Day range>10</Day>
+                                            </Week>
+                                            <Week>
+                                                <Day range>11</Day>
+                                                <Day range>12</Day>
+                                                <Day range>13</Day>
+                                                <Day range>14</Day>
+                                                <Day range>15</Day>
+                                                <Day selected selectedTo>16</Day>
+                                                <Day>17</Day>
+                                            </Week>
+                                            <Week>
+                                                <Day>18</Day>
+                                                <Day>19</Day>
+                                                <Day>20</Day>
+                                                <Day>21</Day>
+                                                <Day>22</Day>
+                                                <Day>23</Day>
+                                                <Day>24</Day>
+                                            </Week>
+                                            <Week>
+                                                <Day holiday>
+                                                    25*
+                                                    <Tooltip>
+                                                        Christmas
+                                                    </Tooltip>
+                                                </Day>
+                                                <Day>26</Day>
+                                                <Day>27</Day>
+                                                <Day>28</Day>
+                                                <Day>29</Day>
+                                                <Day>30</Day>
+                                                <Day>31</Day>
+                                            </Week>
+                                        </Weeks>
+                                        <Footer>
+                                            <HolidayHeader>
+                                                *Public Holidays
+                                            </HolidayHeader>
+                                            <Holidays>
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        25 Dec
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        Christmas
+                                                    </HolidayName>
+                                                </Holiday>
+
+                                                <Holiday>
+                                                    <HolidayDate>
+                                                        1 Jan
+                                                    </HolidayDate>
+                                                    <HolidayName>
+                                                        New Year
+                                                    </HolidayName>
+                                                </Holiday>
+                                            </Holidays>
+                                        </Footer>
+                                    </Month>
+                                    { hasReturn && 
+                                        <Month className='dpMonth'>
                                             <MonthHeader>
-                                                <Arrows>
-                                                    <Arrow>
-                                                        <IconLeftArrow />
-                                                        <IconLeftArrow />
-                                                    </Arrow>
-                                                    <Arrow>
-                                                        <IconLeftArrow />
-                                                    </Arrow>
-                                                </Arrows>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                    <IconLeftArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconLeftArrow />
+                                                </Arrow>
                                                 <MonthYear>
                                                     <MonthHolder>January</MonthHolder> <YearHolder>2020</YearHolder>
                                                 </MonthYear>
-                                                <Arrows>
-                                                    <Arrow>
-                                                        <IconRightArrow />
-                                                    </Arrow>
-                                                    <Arrow>
-                                                        <IconRightArrow />
-                                                        <IconRightArrow />
-                                                    </Arrow>
-                                                </Arrows>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                </Arrow>
+                                                <Arrow>
+                                                    <IconRightArrow />
+                                                    <IconRightArrow />
+                                                </Arrow>
                                             </MonthHeader>
                                             <Weeks>
                                                 <Week>
@@ -525,120 +651,9 @@ function App() {
                                                 </Holidays>
                                             </Footer>
                                         </Month>
-                                        <Month>
-                                            <MonthHeader>
-                                                <Arrow>
-                                                    <IconLeftArrow />
-                                                    <IconLeftArrow />
-                                                </Arrow>
-                                                <Arrow>
-                                                    <IconLeftArrow />
-                                                </Arrow>
-                                                <MonthYear>
-                                                    <MonthHolder>January</MonthHolder> <YearHolder>2020</YearHolder>
-                                                </MonthYear>
-                                                <Arrow>
-                                                    <IconRightArrow />
-                                                </Arrow>
-                                                <Arrow>
-                                                    <IconRightArrow />
-                                                    <IconRightArrow />
-                                                </Arrow>
-                                            </MonthHeader>
-                                            <Weeks>
-                                                <Week>
-                                                    <DayLabel key="0">Mon</DayLabel>
-                                                    <DayLabel key="1">Tue</DayLabel>
-                                                    <DayLabel key="2">Wed</DayLabel>
-                                                    <DayLabel key="3">Thu</DayLabel>
-                                                    <DayLabel key="4">Fri</DayLabel>
-                                                    <DayLabel key="5">Sat</DayLabel>
-                                                    <DayLabel key="6">Sun</DayLabel>
-                                                </Week>
-                                                <Week>
-                                                    <Day empty></Day>
-                                                    <Day empty></Day>
-                                                    <Day empty></Day>
-                                                    <Day empty></Day>
-                                                    <Day holiday>
-                                                        1*
-                                                        <Tooltip>
-                                                            New Year
-                                                        </Tooltip>
-                                                    </Day>
-                                                    <Day>2</Day>
-                                                    <Day>3</Day>
-                                                </Week>
-                                                <Week>
-                                                    <Day selected selectedFrom>4</Day>
-                                                    <Day range>5</Day>
-                                                    <Day range>6</Day>
-                                                    <Day range>7</Day>
-                                                    <Day range>8</Day>
-                                                    <Day range>9</Day>
-                                                    <Day range>10</Day>
-                                                </Week>
-                                                <Week>
-                                                    <Day range>11</Day>
-                                                    <Day range>12</Day>
-                                                    <Day range>13</Day>
-                                                    <Day range>14</Day>
-                                                    <Day range>15</Day>
-                                                    <Day selected selectedTo>16</Day>
-                                                    <Day>17</Day>
-                                                </Week>
-                                                <Week>
-                                                    <Day>18</Day>
-                                                    <Day>19</Day>
-                                                    <Day>20</Day>
-                                                    <Day>21</Day>
-                                                    <Day>22</Day>
-                                                    <Day>23</Day>
-                                                    <Day>24</Day>
-                                                </Week>
-                                                <Week>
-                                                    <Day holiday>
-                                                        25*
-                                                        <Tooltip>
-                                                            Christmas
-                                                        </Tooltip>
-                                                    </Day>
-                                                    <Day>26</Day>
-                                                    <Day>27</Day>
-                                                    <Day>28</Day>
-                                                    <Day>29</Day>
-                                                    <Day>30</Day>
-                                                    <Day>31</Day>
-                                                </Week>
-                                            </Weeks>
-                                            <Footer>
-                                                <HolidayHeader>
-                                                    *Public Holidays
-                                                </HolidayHeader>
-                                                <Holidays>
-                                                    <Holiday>
-                                                        <HolidayDate>
-                                                            25 Dec
-                                                        </HolidayDate>
-                                                        <HolidayName>
-                                                            Christmas
-                                                        </HolidayName>
-                                                    </Holiday>
-
-                                                    <Holiday>
-                                                        <HolidayDate>
-                                                            1 Jan
-                                                        </HolidayDate>
-                                                        <HolidayName>
-                                                            New Year
-                                                        </HolidayName>
-                                                    </Holiday>
-                                                </Holidays>
-                                            </Footer>
-                                        </Month>
-                                    </Calendar>
-                                </Body>
-                            </>
+                                    }
+                                </Calendar>
+                            </Body>
                         }
                     </DatePicker>
                     { showPicker &&
